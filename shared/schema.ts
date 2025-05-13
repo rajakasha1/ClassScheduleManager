@@ -111,7 +111,6 @@ export const DAYS_OF_WEEK = [
   'Wednesday',
   'Thursday',
   'Friday',
-  'Saturday',
 ];
 
 // Infer types

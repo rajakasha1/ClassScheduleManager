@@ -308,7 +308,7 @@ export class MemStorage implements IStorage {
     // For each conflicting schedule, try to find an empty slot
     for (const schedule of validSchedules) {
       // 1. Try to find empty slots
-      for (let day = 0; day < 5; day++) {
+      for (let day = 0; day < 6; day++) {
         for (let slot = 0; slot < 5; slot++) {
           const key = `${day}-${slot}`;
           
@@ -330,7 +330,7 @@ export class MemStorage implements IStorage {
           
           suggestions.push({
             id: uuidv4(),
-            description: `Move ${course?.name || 'Course'} to ${['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'][day]} at ${['6:30-7:20 AM', '7:20-8:10 AM', '8:10-9:00 AM', '9:20-10:10 AM', '10:10-11:00 AM'][slot]} ${preferenceMatch ? '(matches teacher preference)' : ''}`,
+            description: `Move ${course?.name || 'Course'} to ${['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'][day]} at ${['6:30-7:20 AM', '7:20-8:10 AM', '8:10-9:00 AM', '9:20-10:10 AM', '10:10-11:00 AM'][slot]} ${preferenceMatch ? '(matches teacher preference)' : ''}`,
             action: 'move',
             scheduleId: schedule.id,
             newDayOfWeek: day,
@@ -351,7 +351,7 @@ export class MemStorage implements IStorage {
         
         suggestions.push({
           id: uuidv4(),
-          description: `Swap ${course?.name || 'Course'} with ${otherCourse?.name || 'another course'} on ${['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'][otherSchedule.dayOfWeek]} at ${['6:30-7:20 AM', '7:20-8:10 AM', '8:10-9:00 AM', '9:20-10:10 AM', '10:10-11:00 AM'][otherSchedule.timeSlot]}`,
+          description: `Swap ${course?.name || 'Course'} with ${otherCourse?.name || 'another course'} on ${['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'][otherSchedule.dayOfWeek]} at ${['6:30-7:20 AM', '7:20-8:10 AM', '8:10-9:00 AM', '9:20-10:10 AM', '10:10-11:00 AM'][otherSchedule.timeSlot]}`,
           action: 'swap',
           scheduleId: schedule.id,
           swapWithScheduleId: otherSchedule.id
