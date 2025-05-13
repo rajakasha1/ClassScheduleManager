@@ -353,7 +353,7 @@ export default function AddScheduleModal({
                 ) : (
                   teachers.map((teacher) => (
                     <SelectItem key={teacher.id} value={teacher.id.toString()}>
-                      {teacher.name}
+                      {teacher.name} {teacher.specialization ? `(${teacher.specialization})` : ''}
                     </SelectItem>
                   ))
                 )}

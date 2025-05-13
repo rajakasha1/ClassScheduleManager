@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { Conflict, Course, Schedule, Teacher } from "@shared/schema";
+import { Conflict, Course, Program, Schedule, Teacher } from "@shared/schema";
 import ProgramSelector from "@/components/ProgramSelector";
 import ConflictAlert from "@/components/ConflictAlert";
 import ScheduleGrid from "@/components/ScheduleGrid";
@@ -9,6 +9,7 @@ import CourseManagement from "@/components/CourseManagement";
 import ConflictResolutionModal from "@/components/ConflictResolutionModal";
 import AddTeacherModal from "@/components/AddTeacherModal";
 import AddCourseModal from "@/components/AddCourseModal";
+import AddScheduleModal from "@/components/AddScheduleModal";
 import { useTeacherData } from "@/hooks/useTeacherData";
 import { useCourseData } from "@/hooks/useCourseData";
 import { useScheduleData } from "@/hooks/useScheduleData";
@@ -24,13 +25,18 @@ export default function Home() {
   const [isConflictModalOpen, setIsConflictModalOpen] = useState(false);
   const [isAddTeacherModalOpen, setIsAddTeacherModalOpen] = useState(false);
   const [isAddCourseModalOpen, setIsAddCourseModalOpen] = useState(false);
+  const [isAddScheduleModalOpen, setIsAddScheduleModalOpen] = useState(false);
   const [teacherToEdit, setTeacherToEdit] = useState<Teacher | undefined>(undefined);
   const [courseToEdit, setCourseToEdit] = useState<Course | undefined>(undefined);
   const [scheduleToEdit, setScheduleToEdit] = useState<Schedule | undefined>(undefined);
 
-  // Get conflicts data
+  // Get data from API
   const { data: conflicts = [] } = useQuery<Conflict[]>({
     queryKey: ['/api/conflicts'],
+  });
+  
+  const { data: programs = [] } = useQuery<Program[]>({
+    queryKey: ['/api/programs'],
   });
 
   // Initialize hooks
@@ -58,14 +64,14 @@ export default function Home() {
   };
 
   const handleAddClass = (day: number, timeSlot: number) => {
-    // Open add class modal here
-    console.log(`Adding class for day ${day}, time slot ${timeSlot}`);
+    setScheduleToEdit(undefined);
+    setIsAddScheduleModalOpen(true);
+    setSelectedDay(day);
   };
 
   const handleEditClass = (schedule: Schedule) => {
     setScheduleToEdit(schedule);
-    // Open edit class modal here
-    console.log(`Editing class schedule ID ${schedule.id}`);
+    setIsAddScheduleModalOpen(true);
   };
 
   const handleOpenAddTeacher = () => {
@@ -140,6 +146,16 @@ export default function Home() {
         isOpen={isAddCourseModalOpen}
         onClose={() => setIsAddCourseModalOpen(false)}
         courseToEdit={courseToEdit}
+      />
+      
+      <AddScheduleModal
+        isOpen={isAddScheduleModalOpen}
+        onClose={() => setIsAddScheduleModalOpen(false)}
+        defaultDay={selectedDay}
+        defaultTimeSlot={selectedDay === 0 ? 0 : undefined}
+        scheduleToEdit={scheduleToEdit}
+        programId={selectedProgram ? programs.find((p: Program) => p.code === selectedProgram)?.id : undefined}
+        semester={selectedSemester}
       />
     </main>
   );
