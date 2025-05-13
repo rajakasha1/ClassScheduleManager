@@ -309,14 +309,14 @@ export default function AddCourseModal({ isOpen, onClose, courseToEdit }: AddCou
               Assigned Teacher
             </Label>
             <Select 
-              value={teacherId?.toString() || ''} 
-              onValueChange={(value) => setTeacherId(value ? Number(value) : undefined)}
+              value={teacherId?.toString() || 'none'} 
+              onValueChange={(value) => setTeacherId(value !== 'none' ? Number(value) : undefined)}
             >
               <SelectTrigger className="w-full">
                 <SelectValue placeholder="Select a teacher (optional)" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="">None</SelectItem>
+                <SelectItem value="none">None</SelectItem>
                 {teachers.map((teacher) => (
                   <SelectItem key={teacher.id} value={teacher.id.toString()}>
                     {teacher.name}
